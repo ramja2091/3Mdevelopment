@@ -1,0 +1,70 @@
+# Macros / Replacement Parameter definitions
+$productCatalog=electronicsProductCatalog
+$productCatalogName=Electronics Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$classCatalogVersion=catalogversion(catalog(id[default='3M_Product_Classification_GPH']),version[default='1.0'])[unique=true,default='3M_Product_Classification_GPH:1.0']
+$classSystemVersion=systemVersion(catalog(id[default='3M_Product_Classification_GPH']),version[default='1.0'])[unique=true]
+$class=classificationClass(ClassificationClass.code,$classCatalogVersion)[unique=true]
+$supercategories=source(code, $classCatalogVersion)[unique=true]
+$categories=target(code, $catalogVersion)[unique=true]
+$classificationcategories=target(code, $classCatalogVersion)[unique=true]
+$attribute=classificationAttribute(code,$classSystemVersion)[unique=true]
+$unit=unit(code,$classSystemVersion)
+$clAttrModifiers=system='3M_Product_Classification_GPH',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=en
+$lang=en
+
+#classification class- catalog Name from node creation file.
+INSERT_UPDATE ClassificationClass;$classCatalogVersion;code[unique=true];name[lang=$lang]
+;;GPH12435;Bathroom Cleaner
+;;GPH12440;General Purpose Cleaner
+
+# Insert Classification Attribute Values for dropdowns - for enums value creation
+INSERT_UPDATE ClassificationAttributeValue;code[unique=true];name[lang=$lang];$classSystemVersion
+;dapv_MDCW9279R7;Fiberglass;
+
+# Insert Classification Attributes
+INSERT_UPDATE ClassificationAttribute;$classSystemVersion;code[unique=true];name[lang=$lang];defaultAttributeValues(code,$classSystemVersion)
+;;applications;applications;dapv_MDCW9279R7
+
+# Links ClassificationClasses to Categories
+INSERT_UPDATE CategoryCategoryRelation;$categories;$supercategories
+;300;GPH12435
+;300;GPH12440
+
+INSERT_UPDATE ClassAttributeAssignment;$class;$attribute;position;$unit;attributeType(code[default=string]);multiValued[default=false];range[default=false];localized[default=true]
+;GPH12435;applications;1;;enum;;;false
+;GPH12440;applications;1;;enum;;;true
+
+$feature9=@applications[$clAttrModifiers]
+INSERT_UPDATE Product;code[unique=true];$feature9;$catalogVersion;
+;6897540;dapv_MDCW9279R7;
+;6897541;dapv_MDCW9279R7;
+;6897542;dapv_MDCW9279R7;
+
+# Macros / Replacement Parameter definitions
+$productCatalog=electronicsProductCatalog
+$productCatalogName=Electronics Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$classCatalogVersion=catalogversion(catalog(id[default='3M_Product_Classification_GPH']),version[default='1.0'])[unique=true,default='3M_Product_Classification_GPH:1.0']
+$classSystemVersion=systemVersion(catalog(id[default='3M_Product_Classification_GPH']),version[default='1.0'])[unique=true]
+$class=classificationClass(ClassificationClass.code,$classCatalogVersion)[unique=true]
+$supercategories=source(code, $classCatalogVersion)[unique=true]
+$categories=target(code, $catalogVersion)[unique=true]
+$classificationcategories=target(code, $classCatalogVersion)[unique=true]
+$attribute=classificationAttribute(code,$classSystemVersion)[unique=true]
+$unit=unit(code,$classSystemVersion)
+$clAttrModifiers=system='3M_Product_Classification_GPH',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=en
+$lang=en
+
+#impex for base move
+#% impex.setLocale(Locale.ENGLISH);
+#% impex.enableCodeExecution(true);
+#% import de.hybris.platform.core.Registry;
+#% import org.training.core.dao.ThreeMSampleDAO;
+#% ThreeMSampleDAO threeMCategoryUnlinkingDAOImpl = (ThreeMSampleDAO)Registry.getApplicationContext().getBean("threeMSampleDAOImpl");
+
+INSERT_UPDATE ClassAttributeAssignment;$class;$attribute;position;$unit;attributeType(code[default=string]);multiValued[default=false];range[default=false];localized[default=false]
+#% afterEach: threeMCategoryUnlinkingDAOImpl.addFeatureToNewCategory(impex.getLastImportedItem().getClassificationAttribute().getCode(),impex.getLastImportedItem().getClassificationClass().getCode());
+;GPH12440;applications;1;;enum;;;true
+
+

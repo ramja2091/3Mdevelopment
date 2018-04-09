@@ -1,0 +1,37 @@
+# Macros / Replacement Parameter definitions
+#$productCatalog=electronicsProductCatalog
+#$productCatalogName=Electronics Product Catalog
+#$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$classCatalogVersion=catalogversion(catalog(id[default='3M_Product_Classification_GPH']),version[default='1.0'])[unique=true,default='3M_Product_Classification_GPH:1.0']
+$classSystemVersion=systemVersion(catalog(id[default='3M_Product_Classification_GPH']),version[default='1.0'])[unique=true]
+$class=classificationClass(ClassificationClass.code,$classCatalogVersion)[unique=true]
+$supercategories=source(code, $classCatalogVersion)[unique=true]
+#$categories=target(code, $catalogVersion)[unique=true]
+$classificationcategories=target(code, $classCatalogVersion)[unique=true]
+$attribute=classificationAttribute(code,$classSystemVersion)[unique=true]
+$unit=unit(code,$classSystemVersion)
+$lang=en
+$clAttrModifiers=system='3M_Product_Classification_GPH',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=en
+
+#classification class- catalog Name from node creation file.
+INSERT_UPDATE ClassificationClass;$classCatalogVersion;code[unique=true];allowedPrincipals(uid)[default='customergroup'];name[lang=$lang]
+;;GPH20147;;Abrasives Granularization
+;;GPH20066;;Acrylic Foam Tapes
+;;GPH20088;;Acrylic Foam Tapes (Unclassified)
+;;GPH20051;;Aluminum Tapes
+;;GPH20045;;Anti-slip & Grip Tapes
+;;GPH11425;;noname
+;;GPH20154;;noname
+;;GPH10964;;noname
+;;GPH10113;;noname
+;;GPH20154;;noname
+
+#This Header for creating classification class hierarchy.
+INSERT_UPDATE CategoryCategoryRelation;$classificationcategories;$supercategories
+;GPH20066;GPH11425
+;GPH20088;GPH20154
+;GPH20051;GPH10964
+;GPH20045;GPH10113
+
+
+

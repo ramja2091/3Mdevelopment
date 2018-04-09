@@ -1,0 +1,25 @@
+# Macros / Replacement Parameter definitions
+$productCatalog=electronicsProductCatalog
+$productCatalogName=Electronics Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$classCatalogVersion=catalogversion(catalog(id[default='3M_Product_Classification_GPH']),version[default='1.0'])[unique=true,default='3M_Product_Classification_GPH:1.0']
+$classSystemVersion=systemVersion(catalog(id[default='3M_Product_Classification_GPH']),version[default='1.0'])[unique=true]
+$class=classificationClass(ClassificationClass.code,$classCatalogVersion)[unique=true]
+$supercategories=source(code, $classCatalogVersion)[unique=true]
+$categories=target(code, $catalogVersion)[unique=true]
+$classificationcategories=target(code, $classCatalogVersion)[unique=true]
+$attribute=classificationAttribute(code,$classSystemVersion)[unique=true]
+$unit=unit(code,$classSystemVersion)
+$lang=en
+$clAttrModifiers=system='3M_Product_Classification_GPH',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=en
+
+# Links ClassificationClasses to Categories
+INSERT_UPDATE CategoryCategoryRelation;$categories;$supercategories
+;300;GPH20060
+
+INSERT_UPDATE ClassAttributeAssignment;$class;$attribute[cellDecorator=org.training.core.decorators.ZorangCategoryDecorator];position;$unit;attributeType(code[default=string]);multiValued[default=false];range[default=false];localized[default=false]
+#;GPH20060;GSGKFCR6QH;1;;enum
+#;GPH20008;AttrC1034;1;;enum
+;GPH20060;RX2G8PKZMG;2;;number
+#;GPH20008;AttrC1033;1;;enum
+#;GPH20060;J9PQL1NMRC;1;;enum

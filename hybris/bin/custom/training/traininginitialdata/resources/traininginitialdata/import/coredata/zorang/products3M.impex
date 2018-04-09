@@ -1,0 +1,131 @@
+$lang=en
+# Macros / Replacement Parameter definitions
+$productCatalog=electronicsProductCatalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$supercategories=source(code, $catalogVersion)[unique=true]
+$categories=target(code, $catalogVersion)[unique=true]
+$productCatalogName=Electronics Product Catalog
+$baseProduct=baseProduct(code,$catalogVersion)
+$approved=approvalstatus(code)[default='approved']
+
+# Macros / Replacement Parameter definitions
+$productCatalog=electronicsProductCatalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$thumbnail=thumbnail(code, $catalogVersion)
+$picture=picture(code, $catalogVersion)
+$thumbnails=thumbnails(code, $catalogVersion)
+$detail=detail(code, $catalogVersion)
+$normal=normal(code, $catalogVersion)
+$others=others(code, $catalogVersion)
+$data_sheet=data_sheet(code, $catalogVersion)
+$medias=medias(code, $catalogVersion)
+$galleryImages=galleryImages(qualifier, $catalogVersion)
+$siteResource=jar:de.hybris.platform.electronicsstore.constants.ElectronicsstoreConstants&/foresightstorefront/import/sampledata/productCatalogs/$productCatalog
+$vendor=electro
+
+
+INSERT_UPDATE Product;code[unique=true];$catalogVersion;name[lang=$lang];summary[lang=$lang];description[lang=$lang];$approved
+
+;6897540;;SCHICK HYDRO CONNECT™ 5 REFILLS;SCHICK HYDRO CONNECT™ 5 REFILLS
+;6897541;;SCHICK HYDRO CONNECT™ 5 SENSITIVE REFILLS;SCHICK HYDRO CONNECT™ 5 SENSITIVE REFILLS
+;6897542;;SCHICK HYDRO CONNECT™ 3 REFILLS;SCHICK HYDRO CONNECT™ 3 REFILLS
+;6897543;;SCHICK HYDRO® 5 REFILLS;SCHICK HYDRO® 5 REFILLS
+;6897544;;SCHICK HYDRO® 5 SENSITIVE REFILLS;SCHICK HYDRO® 5 SENSITIVE REFILLS
+;6897545;;SCHICK HYDRO® 3 REFILLS;SCHICK HYDRO® 3 REFILLS
+;6897546;;SCHICK HYDRO® 5 RAZOR;SCHICK HYDRO® 5 RAZOR
+;6897547;;SCHICK HYDRO® 5 SENSITIVE RAZOR;SCHICK HYDRO® 5 SENSITIVE RAZOR
+;6897548;;SCHICK HYDRO® 3 RAZOR;SCHICK HYDRO® 3 RAZOR
+
+
+INSERT_UPDATE PriceRow;productId[unique=true];unit(code[unique=true,default=pieces]);currency(isocode)[unique=true];price;minqtd;unitFactor;net
+;6897540;pieces;USD;400;1;1;false
+;6897540;pieces;JPY;30740;1;1;false
+;6897541;pieces;USD;360,86;1;1;false
+;6897541;pieces;JPY;30740;1;1;false
+;6897542;pieces;USD;360,86;1;1;false
+;6897542;pieces;JPY;30740;1;1;false
+;6897543;pieces;USD;360,86;1;1;false
+;6897543;pieces;JPY;30740;1;1;false
+;6897544;pieces;USD;360,86;1;1;false
+;6897544;pieces;JPY;30740;1;1;false
+;6897545;pieces;USD;360,86;1;1;false
+;6897545;pieces;JPY;30740;1;1;false
+
+;6897546;pieces;USD;360,86;1;1;false
+;6897546;pieces;JPY;30740;1;1;false
+;6897547;pieces;USD;360,86;1;1;false
+;6897547;pieces;JPY;30740;1;1;false
+;6897548;pieces;USD;360,86;1;1;false
+;6897548;pieces;JPY;30740;1;1;false
+
+
+
+INSERT_UPDATE Vendor;code[unique=true]
+;$vendor
+
+INSERT_UPDATE Warehouse;code[unique=true];name[lang=en];name[lang=de];vendor(code);default
+;warehouse_s;Warehouse South;Warehouse South;electro;true
+;warehouse_e;Warehouse East;Warehouse East;electro;true
+;warehouse_w;Warehouse West;Warehouse West;electro;true
+;warehouse_n;Warehouse North;Warehouse North;electro;true
+
+INSERT_UPDATE StockLevel;available;warehouse(code)[unique=true];inStockStatus(code);maxPreOrder;maxStockLevelHistoryCount;overSelling;preOrder;productCode[unique=true];reserved
+;29;warehouse_s;notSpecified;1;0;0;0;6897540;0
+;29;warehouse_s;notSpecified;1;0;0;0;6897541;0
+;29;warehouse_s;notSpecified;1;0;0;0;6897542;0
+;29;warehouse_s;notSpecified;1;0;0;0;6897543;0
+;29;warehouse_s;notSpecified;1;0;0;0;6897544;0
+;29;warehouse_s;notSpecified;1;0;0;0;6897545;0
+;29;warehouse_s;notSpecified;1;0;0;0;6897546;0
+;29;warehouse_s;notSpecified;1;0;0;0;6897547;0
+;29;warehouse_s;notSpecified;1;0;0;0;6897548;0
+
+
+INSERT_UPDATE Product;code[unique=true];$catalogVersion;stockLevels(productCode,warehouse(code));vendors(code);$approved
+#mine
+;6897540;;6897540:warehouse_s;electro
+;6897541;;6897541:warehouse_s;electro
+;6897542;;6897542:warehouse_s;electro
+;6897543;;6897543:warehouse_s;electro
+;6897544;;6897544:warehouse_s;electro
+;6897545;;6897545:warehouse_s;electro
+;6897546;;6897546:warehouse_s;electro
+;6897547;;6897547:warehouse_s;electro
+;6897548;;6897548:warehouse_s;electro
+
+
+
+# Insert Categories
+INSERT_UPDATE Category;code[unique=true];allowedPrincipals(uid)[default='customergroup'];$catalogVersion;name
+
+;300;;;razorcategory
+;600;;;gillete
+;900;;;schick
+;1200;;;refills
+
+# Insert Category Structure
+INSERT_UPDATE CategoryCategoryRelation;$categories;$supercategories
+;600;300
+;900;300
+;1200;300
+;300;1
+
+$suprcategories=supercategories(code, $catalogVersion)
+
+# Insert Products
+INSERT_UPDATE Product;code[unique=true];$suprcategories;manufacturerName;manufacturerAID;unit(code);ean;variantType(code);$catalogVersion;$approved
+#mine
+;6897546;600;Razor;6820B104AA;pieces;
+;6897547;600;Razor;6820B104AA;pieces;
+;6897548;600;Razor;6820B104AA;pieces;
+
+;6897543;900;Razor;6820B104AA;pieces;
+;6897544;900;Razor;6820B104AA;pieces;
+;6897545;900;Razor;6820B104AA;pieces;
+
+;6897540;1200;Razor;6820B104AA;pieces;
+;6897541;1200;Razor;6820B104AA;pieces;
+;6897542;1200;Razor;6820B104AA;pieces;
+
+####
+

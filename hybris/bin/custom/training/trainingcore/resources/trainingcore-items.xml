@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2017 SAP SE or an SAP affiliate company.  All rights reserved.
+
+ This software is the confidential and proprietary information of SAP
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with SAP.
+-->
+
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="items.xsd">
+
+    <collectiontypes>
+       <!-- <collectiontype code="GenderList" elementtype="Gender" autocreate="true" generate="true" type="list"/> 
+        <collectiontype code="SwatchColorSet" elementtype="SwatchColorEnum" autocreate="true" generate="true"
+                        type="set"/> -->
+    </collectiontypes>
+
+
+    <enumtypes>
+       <!-- <enumtype generate="true" code="SwatchColorEnum" autocreate="true" dynamic="true">
+            <value code="BLACK"/>
+            <value code="BLUE"/>
+            <value code="BROWN"/>
+            <value code="GREEN"/>
+            <value code="GREY"/>
+            <value code="ORANGE"/>
+            <value code="PINK"/>
+            <value code="PURPLE"/>
+            <value code="RED"/>
+            <value code="SILVER"/>
+            <value code="WHITE"/>
+            <value code="YELLOW"/>
+        </enumtype> -->
+    </enumtypes>
+
+   
+</items>

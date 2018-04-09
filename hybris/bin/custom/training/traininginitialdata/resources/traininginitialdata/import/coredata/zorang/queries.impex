@@ -1,0 +1,20 @@
+select * from {product} where {code} = '6897540' - 8796256894977
+select * from {ClassAttributeAssignment}
+
+select * from {classificationAttribute} where {code} = 'RX2G8PKZMG' - 8796125889119 'GSGKFCR6QH' 8796125823583
+select * from {ClassificationClass} where {code} = 'GPH20060' - 8796158787726   'GPH10061' - 8796158722190
+
+select * from {ClassAttributeAssignment} where {classificationAttribute} =  8796125889119 and {ClassificationClass} = 8796158787726
+
+REMOVE ProductFeature;qualifier
+;3m_product_classification_gph/1.0/gph20060.rx2g8pkzmg
+
+
+select * from {productfeature} where {product}  = 8796256894977 and {ClassAttributeAssignment} =
+
+
+
+
+CAA - 8796158657122
+CC - 8796158787726
+CA -8796125889119 - RX2G8PKZMG

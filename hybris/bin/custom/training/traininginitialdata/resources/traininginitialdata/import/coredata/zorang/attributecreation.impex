@@ -1,0 +1,85 @@
+# Macros / Replacement Parameter definitions
+$productCatalog=electronicsProductCatalog
+$productCatalogName=Electronics Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$classCatalogVersion=catalogversion(catalog(id[default='3M_Product_Classification_GPH']),version[default='1.0'])[unique=true,default='3M_Product_Classification_GPH:1.0']
+$classSystemVersion=systemVersion(catalog(id[default='3M_Product_Classification_GPH']),version[default='1.0'])[unique=true]
+$class=classificationClass(ClassificationClass.code,$classCatalogVersion)[unique=true]
+$supercategories=source(code, $classCatalogVersion)[unique=true]
+$categories=target(code, $catalogVersion)[unique=true]
+$classificationcategories=target(code, $classCatalogVersion)[unique=true]
+$attribute=classificationAttribute(code,$classSystemVersion)[unique=true]
+$unit=unit(code,$classSystemVersion)
+$lang=en
+$clAttrModifiers=system='3M_Product_Classification_GPH',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=en
+
+#classification class- catalog Name from node creation file.
+INSERT_UPDATE ClassificationClass;$classCatalogVersion;code[unique=true];name[lang=$lang]
+;;GPH10661;GPH10661
+;;GPH20008;GPH20008
+;;GPH20060;GPH20060
+;;GPH20063;GPH20063
+;;GPH20025;GPH20025
+
+# Insert Classification Attribute Values for dropdowns - for enums value creation
+INSERT_UPDATE ClassificationAttributeValue;code[unique=true];name[lang=$lang];$classSystemVersion
+;100% Wool;100% Wool;
+;Wool;Wool;
+;Foam;Foam;
+;Wool Blend;Wool Blend;
+;Aluminum Oxide;Aluminum Oxide;
+;Cloth;Cloth;
+;Polyester;Polyester;
+
+# Insert Classification Attributes
+INSERT_UPDATE ClassificationAttribute;$classSystemVersion;code[unique=true];name[lang=$lang];defaultAttributeValues(code,$classSystemVersion)
+;;GSGKFCR6QH;Material;100% Wool,Wool,Foam,Wool Blend
+;;AttrC1034;Face Style;
+;;RX2G8PKZMG;Pile Height (Imperial);
+;;AttrC1033;Number of Sides;
+;;J9PQL1NMRC;Abrasive Material;Aluminum Oxide
+;;SampleString;SampleString;
+;;SampleBoolean;SampleBoolean;
+;;sampleLocalisedAttrribute;sampleLocalisedAttrribute;
+
+INSERT_UPDATE ClassAttributeAssignment;$class;$attribute;position;$unit;attributeType(code[default=string]);multiValued[default=false];range[default=false];localized[default=false]
+;GPH10661;GSGKFCR6QH;1;;enum
+;GPH10661;AttrC1034;1;;enum
+;GPH10661;RX2G8PKZMG;2;;number
+;GPH10661;AttrC1033;1;;enum
+;GPH10661;J9PQL1NMRC;1;;enum
+;GPH10661;SampleString;1;;string
+;GPH10661;SampleBoolean;1;;boolean
+
+INSERT_UPDATE ClassAttributeAssignment;$class;$attribute;position;$unit;attributeType(code[default=string]);multiValued[default=false];range[default=false];localized[default=true]
+;GPH10661;sampleLocalisedAttrribute;1;;enum;;true;
+
+
+# Links ClassificationClasses to Categories
+INSERT_UPDATE CategoryCategoryRelation;$categories;$supercategories
+;300;GPH10661
+;300;GPH20008
+;300;GPH20060
+;300;GPH20025
+
+$feature6=@SampleString[$clAttrModifiers]
+$feature7=@SampleBoolean[$clAttrModifiers]
+INSERT_UPDATE Product;code[unique=true];$feature6;$feature7;$catalogVersion;
+;6897540;samplestringcheck;true;
+;6897541;samplestringcheck1;false;
+;6897542;samplestringcheck2;true;
+
+# Classification: Weight & dimensions (1091)
+$feature1=@GSGKFCR6QH[$clAttrModifiers];
+$feature2=@AttrC1034[$clAttrModifiers];
+$feature3=@RX2G8PKZMG[$clAttrModifiers];
+$feature4=@AttrC1033[$clAttrModifiers];
+$feature5=@J9PQL1NMRC[$clAttrModifiers];
+
+INSERT_UPDATE Product;code[unique=true];$feature1;$feature2;$feature3;$feature4;$feature5;$catalogVersion;
+;6897540;Wool;;3;;Aluminum Oxide;
+;6897541;Foam;;5;;Aluminum Oxide;
+;6897542;Wool Blend;;6;;Aluminum Oxide;
+
+
+

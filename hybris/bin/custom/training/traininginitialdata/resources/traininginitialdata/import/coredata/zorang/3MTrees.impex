@@ -1,0 +1,109 @@
+$lang=en
+# Macros / Replacement Parameter definitions
+$productCatalog=electronicsProductCatalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$supercategories=source(code, $catalogVersion)[unique=true]
+$categories=target(code, $catalogVersion)[unique=true]
+$productCatalogName=Electronics Product Catalog
+$baseProduct=baseProduct(code,$catalogVersion)
+$approved=approvalstatus(code)[default='approved']
+
+# Macros / Replacement Parameter definitions
+$productCatalog=electronicsProductCatalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+$thumbnail=thumbnail(code, $catalogVersion)
+$picture=picture(code, $catalogVersion)
+$thumbnails=thumbnails(code, $catalogVersion)
+$detail=detail(code, $catalogVersion)
+$normal=normal(code, $catalogVersion)
+$others=others(code, $catalogVersion)
+$data_sheet=data_sheet(code, $catalogVersion)
+$medias=medias(code, $catalogVersion)
+$galleryImages=galleryImages(qualifier, $catalogVersion)
+$siteResource=jar:de.hybris.platform.electronicsstore.constants.ElectronicsstoreConstants&/foresightstorefront/import/sampledata/productCatalogs/$productCatalog
+$vendor=electro
+
+
+INSERT_UPDATE Product;code[unique=true];$catalogVersion;name[lang=$lang];summary[lang=$lang];description[lang=$lang]
+
+;1000001;;Burr Oaks;Burr Oaks
+;1000002;;Black Oaks;Black Oaks
+;1000003;;Pin Oaks;Pin Oaks
+;1000004;;Norway Maples;Norway Maples
+;1000005;;Japanese Maples;Japanese Maples
+;1000006;;Big Leaf Maples;Big Leaf Maples
+;1000007;;Red Maples;Red Maples
+
+
+INSERT_UPDATE PriceRow;productId[unique=true];unit(code[unique=true,default=pieces]);currency(isocode)[unique=true];price;minqtd;unitFactor;net
+;1000001;pieces;USD;400;1;1;false
+;1000002;pieces;USD;360,86;1;1;false
+;1000003;pieces;USD;360,86;1;1;false
+;1000004;pieces;USD;360,86;1;1;false
+;1000005;pieces;USD;360,86;1;1;false
+;1000006;pieces;USD;360,86;1;1;false
+;1000007;pieces;USD;360,86;1;1;false
+
+INSERT_UPDATE Vendor;code[unique=true]
+;$vendor
+
+INSERT_UPDATE Warehouse;code[unique=true];name[lang=en];name[lang=de];vendor(code);default
+;warehouse_s;Warehouse South;Warehouse South;electro;true
+;warehouse_e;Warehouse East;Warehouse East;electro;true
+;warehouse_w;Warehouse West;Warehouse West;electro;true
+;warehouse_n;Warehouse North;Warehouse North;electro;true
+
+INSERT_UPDATE StockLevel;available;warehouse(code)[unique=true];inStockStatus(code);maxPreOrder;maxStockLevelHistoryCount;overSelling;preOrder;productCode[unique=true];reserved
+;29;warehouse_s;notSpecified;1;0;0;0;1000001;0
+;29;warehouse_s;notSpecified;1;0;0;0;1000002;0
+;29;warehouse_s;notSpecified;1;0;0;0;1000003;0
+;29;warehouse_s;notSpecified;1;0;0;0;1000004;0
+;29;warehouse_s;notSpecified;1;0;0;0;1000005;0
+;29;warehouse_s;notSpecified;1;0;0;0;1000006;0
+;29;warehouse_s;notSpecified;1;0;0;0;1000007;0
+
+
+INSERT_UPDATE Product;code[unique=true];$catalogVersion;stockLevels(productCode,warehouse(code));vendors(code)
+#mine
+;1000001;;1000001:warehouse_s;electro
+;1000002;;1000002:warehouse_s;electro
+;1000003;;1000003:warehouse_s;electro
+;1000004;;1000004:warehouse_s;electro
+;1000005;;1000005:warehouse_s;electro
+;1000006;;1000006:warehouse_s;electro
+;1000007;;1000007:warehouse_s;electro
+
+
+
+# Insert Categories
+INSERT_UPDATE Category;code[unique=true];allowedPrincipals(uid)[default='customergroup'];$catalogVersion;name
+
+;1000;;;Tress
+;2000;;;gillete
+;900;;;schick
+;1200;;;refills
+
+# Insert Category Structure
+INSERT_UPDATE CategoryCategoryRelation;$categories;$supercategories
+;600;300
+;900;300
+;1200;300
+;300;1
+
+$suprcategories=supercategories(code, $catalogVersion)
+
+# Insert Products
+INSERT_UPDATE Product;code[unique=true];$suprcategories;manufacturerName;manufacturerAID;unit(code);ean;variantType(code);$catalogVersion;$approved
+#mine
+;1000007;600;Razor;6820B104AA;pieces;
+
+;1000004;900;Razor;6820B104AA;pieces;
+;1000005;900;Razor;6820B104AA;pieces;
+;1000006;900;Razor;6820B104AA;pieces;
+
+;1000001;1200;Razor;6820B104AA;pieces;
+;1000002;1200;Razor;6820B104AA;pieces;
+;1000003;1200;Razor;6820B104AA;pieces;
+
+####
+
